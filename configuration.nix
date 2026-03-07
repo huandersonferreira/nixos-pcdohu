@@ -47,6 +47,11 @@
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
+  services.xrdp.enable = true;
+  services.xrdp.openFirewall = true;
+  services.xrdp.defaultWindowManager = "startplasma-x11";
+  services.displayManager.autoLogin.enable = false;
+
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
