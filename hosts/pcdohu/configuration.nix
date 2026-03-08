@@ -8,7 +8,7 @@
     ../../profiles/desktop.nix
     ../../profiles/development.nix
 
-    ../../roles/worksation.nix
+    ../../roles/workstation.nix
     ../../roles/docker-host.nix
     ../../roles/virtualization.nix
   ];
