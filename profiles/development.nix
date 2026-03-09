@@ -5,6 +5,9 @@
     git
     gh
     vscode
+    github-copilot-cli
+    gemini-cli
+    claude-code
 
     gcc
     gnumake
