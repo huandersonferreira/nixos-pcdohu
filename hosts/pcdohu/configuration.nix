@@ -7,6 +7,7 @@
     ../../profiles/base.nix
     ../../profiles/desktop.nix
     ../../profiles/development.nix
+    ../../profiles/gamer.nix
 
     ../../roles/workstation.nix
     ../../roles/docker-host.nix
