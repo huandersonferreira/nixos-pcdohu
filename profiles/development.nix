@@ -3,8 +3,18 @@
 {
   environment.systemPackages = with pkgs; [
     git
+    gh
+    vscode
+
+    gcc
+    gnumake
+    cmake
+
     curl
     wget
-    vscode
+
+    nodejs
+    python3
+    go
   ];
 }
