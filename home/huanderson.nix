@@ -8,8 +8,12 @@
 
   programs.git = {
     enable = true;
-    userName = "Huanderson C. Ferreira";
-    userEmail = "huandersonferreira7@gmail.com";
+    settings = {
+      user = {
+        name = "Huanderson C. Ferreira";
+        email = "huandersonferreira7@gmail.com";
+      };
+    };
   };
 
   programs.zsh.enable = true;
