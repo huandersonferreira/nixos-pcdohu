@@ -25,8 +25,6 @@
     nix-direnv.enable = true;
   };
 
-  programs.steam.enable = true;
-
   home.packages = with pkgs; [
     bat
     eza
