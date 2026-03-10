@@ -34,9 +34,18 @@
 
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
+    trusted-users = [ "root" "huanderson" ];
   };
 
   nixpkgs.config.allowUnfree = true;
+
+  services.snapper = {
+    configs.root = {
+      SUBVOLUME = "/";
+      TIMELINE_CREATE = true;
+      TIMELINE_CLEANUP = true;
+    };
+  };
 
   system.stateVersion = "25.11";
 }
