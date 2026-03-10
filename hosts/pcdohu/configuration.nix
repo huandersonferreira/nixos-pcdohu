@@ -76,5 +76,23 @@
     umount /btrfs_tmp
   '';
 
+  { config, pkgs, lib, ... }:
+
+{
+  system.activationScripts.updateRootBase = lib.mkAfter ''
+    echo "Updating BTRFS root-base snapshot..."
+
+    mkdir -p /btrfs_tmp
+    mount -o subvolid=5 /dev/nvme2n1p2 /btrfs_tmp
+
+    if [ -e /btrfs_tmp/@root-base ]; then
+      btrfs subvolume delete /btrfs_tmp/@root-base
+    fi
+
+    btrfs subvolume snapshot /btrfs_tmp/@root /btrfs_tmp/@root-base
+
+    umount /btrfs_tmp
+  '';
+
   system.stateVersion = "25.11";
 }
