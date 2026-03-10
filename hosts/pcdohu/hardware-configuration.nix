@@ -37,6 +37,12 @@
       options = [ "subvol=@home" "compress=zstd" "noatime" ];
     };
 
+  fileSystems."/persist" =
+    { device = "/dev/disk/by-uuid/d8a6c8ea-544b-4ad7-8c47-8a839d446083";
+      fsType = "btrfs";
+      options = [ "subvol=@persist" "compress=zstd" "noatime" ];
+    };
+
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/52E7-C956";
       fsType = "vfat";
