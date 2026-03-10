@@ -76,9 +76,6 @@
     umount /btrfs_tmp
   '';
 
-  { config, pkgs, lib, ... }:
-
-{
   system.activationScripts.updateRootBase = lib.mkAfter ''
     echo "Updating BTRFS root-base snapshot..."
 
