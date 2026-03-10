@@ -63,5 +63,18 @@
     ];
   };
 
+  boot.initrd.postDeviceCommands = lib.mkAfter ''
+    mkdir -p /btrfs_tmp
+    mount -o subvolid=5 /dev/nvme2n1p2 /btrfs_tmp
+
+    if [ -e /btrfs_tmp/@root ]; then
+      btrfs subvolume delete /btrfs_tmp/@root
+    fi
+
+    btrfs subvolume snapshot /btrfs_tmp/@root-base /btrfs_tmp/@root
+
+    umount /btrfs_tmp
+  '';
+
   system.stateVersion = "25.11";
 }
