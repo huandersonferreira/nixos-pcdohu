@@ -10,9 +10,11 @@
     };
 
     agenix.url = "github:ryantm/agenix";
+
+    impermanence.url = "github:nix-community/impermanence";
   };
 
-  outputs = { self, nixpkgs, home-manager, agenix }:
+  outputs = { self, nixpkgs, home-manager, agenix, impermanence }:
 
   let system = "x86_64-linux";
   
@@ -25,6 +27,7 @@
 
           home-manager.nixosModules.home-manager
           agenix.nixosModules.default
+          impermanence.nixosModules.impermanence
 
           {
             home-manager.useGlobalPkgs = true;

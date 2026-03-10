@@ -47,5 +47,21 @@
     };
   };
 
+  environment.persistence."/persist" = {
+    hideMounts = true;
+
+    directories = [
+      "/var/lib/docker"
+      "/var/lib/libvirt"
+      "/var/lib/bluetooth"
+      "/var/lib/systemd"
+      "/var/lib/nixos"
+    ];
+
+    files = [
+      "/etc/machine-id"
+    ];
+  };
+
   system.stateVersion = "25.11";
 }
