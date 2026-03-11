@@ -23,34 +23,29 @@
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
 
-  services.xserver = {
-    enable = true;
+  # Define o idioma principal do sistema
+  i18n.defaultLocale = "pt_BR.UTF-8";
 
-    xkb = {
-      layout = "us-custom";
+  # Configurações extras (moeda, medidas, data) para o padrão brasileiro
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "pt_BR.UTF-8";
+    LC_IDENTIFICATION = "pt_BR.UTF-8";
+    LC_MEASUREMENT = "pt_BR.UTF-8";
+    LC_MONETARY = "pt_BR.UTF-8";
+    LC_NAME = "pt_BR.UTF-8";
+    LC_NUMERIC = "pt_BR.UTF-8";
+    LC_PAPER = "pt_BR.UTF-8";
+    LC_TELEPHONE = "pt_BR.UTF-8";
+    LC_TIME = "pt_BR.UTF-8";
+  };
 
-      extraLayouts = {
-        us-custom = {
-          description = "US with cedilla on ' + c";
-          languages = [ "eng" ];
+  # Configura o teclado no console (TTY)
+  console.keyMap = "br-abnt2";
 
-          symbolsFile = builtins.toFile "us-custom" ''
-            partial alphanumeric_keys
-            xkb_symbols "basic" {
-
-                include "us(intl)"
-
-                name[Group1] = "US International (cedilla fix)";
-
-                key <AC03> {
-                    type= "FOUR_LEVEL",
-                    symbols[Group1] = [ c, C, ccedilla, Ccedilla ]
-                };
-            };
-          '';
-        };
-      };
-    };
+  # Configura o teclado no ambiente gráfico (X11/Wayland/Plasma)
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "intl";
   };
 
   users.users = {

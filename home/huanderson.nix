@@ -14,6 +14,12 @@
     enable = true;
     overrideConfig = true;
 
+    workspace = {
+      lookAndFeel = "org.kde.breezedark.desktop";
+      iconTheme = "breeze-dark";
+      cursor.theme = "breeze_cursors";
+    };
+
     powerdevil = {
       AC = {
         powerProfile = "performance";
@@ -52,5 +58,7 @@
     eza
     fzf
     jq
+    aspellDicts.pt_BR
+    hunspellDicts.pt_BR
   ];
 }
