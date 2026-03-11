@@ -18,6 +18,36 @@
 
   time.timeZone = "America/Maceio";
 
+  services.xserver = {
+    enable = true;
+
+    xkb = {
+      layout = "us-custom";
+
+      extraLayouts = {
+        us-custom = {
+          description = "US with cedilla on ' + c";
+          languages = [ "eng" ];
+
+          symbolsFile = builtins.toFile "us-custom" ''
+            partial alphanumeric_keys
+            xkb_symbols "basic" {
+
+                include "us(intl)"
+
+                name[Group1] = "US International (cedilla fix)";
+
+                key <AC03> {
+                    type= "FOUR_LEVEL",
+                    symbols[Group1] = [ c, C, ccedilla, Ccedilla ]
+                };
+            };
+          '';
+        };
+      };
+    };
+  };
+
   users.users = {
     huanderson = {
       isNormalUser = true;
