@@ -61,5 +61,8 @@
     jq
     aspellDicts.pt_BR
     hunspellDicts.pt_BR
+    yubioath-flutter
+    yubikey-manager
+    pam_u2f
   ];
 }
