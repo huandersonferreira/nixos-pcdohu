@@ -19,5 +19,12 @@
     nodejs
     python3
     go
+
+    ollama
+    ollama-vulkan
   ];
+
+  services.ollama = {
+    enable = true;
+  };
 }
