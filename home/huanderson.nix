@@ -64,5 +64,6 @@
     yubioath-flutter
     yubikey-manager
     pam_u2f
+    winbox4
   ];
 }
