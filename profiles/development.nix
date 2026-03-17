@@ -7,6 +7,10 @@
         system = prev.system;
         config.allowUnfree = true;
       }).vscode;
+      dbeaver-bin = (import inputs.nixpkgs-unstable {
+        system = prev.system;
+        config.allowUnfree = true;
+      }).dbeaver-bin;
     })
   ];
 
