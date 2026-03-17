@@ -1,6 +1,15 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
+  nixpkgs.overlays = [
+    (final: prev: {
+      vscode = (import inputs.nixpkgs-unstable {
+        system = prev.system;
+        config.allowUnfree = true;
+      }).vscode;
+    })
+  ];
+
   environment.systemPackages = with pkgs; [
     git
     gh
