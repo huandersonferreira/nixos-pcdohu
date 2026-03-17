@@ -17,6 +17,7 @@
   environment.systemPackages = with pkgs; [
     git
     gh
+    glab
     vscode
     github-copilot-cli
     gemini-cli
