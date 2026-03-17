@@ -17,6 +17,7 @@
     github-copilot-cli
     gemini-cli
     claude-code
+    dbeaver-bin
 
     gcc
     gnumake
