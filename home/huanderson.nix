@@ -65,5 +65,6 @@
     yubikey-manager
     pam_u2f
     winbox4
+    anydesk
   ];
 }
