@@ -11,6 +11,10 @@
         system = prev.system;
         config.allowUnfree = true;
       }).dbeaver-bin;
+      warp-terminal = (import inputs.nixpkgs-unstable {
+        system = prev.system;
+        config.allowUnfree = true;
+      }).warp-terminal;
     })
   ];
 
@@ -23,6 +27,7 @@
     gemini-cli
     claude-code
     dbeaver-bin
+    warp-terminal
 
     gcc
     gnumake
