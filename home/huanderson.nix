@@ -24,7 +24,7 @@
     powerdevil = {
       AC = {
         powerProfile = "performance";
-        turnOffDisplay.idleTimeout = 1800;
+        turnOffDisplay.idleTimeout = 3600;
         autoSuspend.action = "nothing";
       };
     };
