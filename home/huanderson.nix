@@ -59,6 +59,7 @@
     eza
     fzf
     jq
+    warp-terminal
     aspellDicts.pt_BR
     hunspellDicts.pt_BR
     yubioath-flutter
