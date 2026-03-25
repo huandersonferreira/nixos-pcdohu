@@ -24,4 +24,11 @@
     max-jobs = "auto";
     cores = 0;
   };
+
+  hardware.graphics = {
+    extraPackages = with pkgs; [
+      amdvlk
+      rocm-opencl-icd
+    ];
+  };
 }
