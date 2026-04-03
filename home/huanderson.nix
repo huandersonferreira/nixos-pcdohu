@@ -67,5 +67,6 @@
     pam_u2f
     winbox4
     anydesk
+    bitwarden-desktop
   ];
 }
