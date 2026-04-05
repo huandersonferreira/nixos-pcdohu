@@ -28,6 +28,7 @@
     claude-code
     dbeaver-bin
     warp-terminal
+    termius
 
     gcc
     gnumake
