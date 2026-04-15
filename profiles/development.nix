@@ -29,6 +29,7 @@
     dbeaver-bin
     warp-terminal
     termius
+    postman
 
     gcc
     gnumake
