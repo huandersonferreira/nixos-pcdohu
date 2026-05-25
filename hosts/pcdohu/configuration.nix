@@ -9,6 +9,8 @@
     ../../profiles/development.nix
     ../../profiles/gamer.nix
 
+    ../../modules/hardware/optimizations.nix
+
     ../../roles/workstation.nix
     ../../roles/docker-host.nix
     ../../roles/virtualization.nix

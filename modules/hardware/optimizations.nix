@@ -26,9 +26,6 @@
   };
 
   hardware.graphics = {
-    extraPackages = with pkgs; [
-      amdvlk
-      rocm-opencl-icd
-    ];
+    extraPackages = [ ];
   };
 }
