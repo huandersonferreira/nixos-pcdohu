@@ -1,33 +1,16 @@
-{ pkgs, inputs, ... }:
+{ pkgs, pkgsUnstable, ... }:
 
 {
-  nixpkgs.overlays = [
-    (final: prev: {
-      vscode = (import inputs.nixpkgs-unstable {
-        system = prev.system;
-        config.allowUnfree = true;
-      }).vscode;
-      dbeaver-bin = (import inputs.nixpkgs-unstable {
-        system = prev.system;
-        config.allowUnfree = true;
-      }).dbeaver-bin;
-      warp-terminal = (import inputs.nixpkgs-unstable {
-        system = prev.system;
-        config.allowUnfree = true;
-      }).warp-terminal;
-    })
-  ];
-
   environment.systemPackages = with pkgs; [
     git
     gh
     glab
-    vscode
+    pkgsUnstable.vscode
     github-copilot-cli
     gemini-cli
     claude-code
-    dbeaver-bin
-    warp-terminal
+    pkgsUnstable.dbeaver-bin
+    pkgsUnstable.warp-terminal
     termius
     postman
 
@@ -42,7 +25,6 @@
     python3
     go
 
-    ollama
     ollama-vulkan
   ];
 

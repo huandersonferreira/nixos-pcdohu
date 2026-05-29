@@ -21,15 +21,20 @@
     impermanence.url = "github:nix-community/impermanence";
   };
 
-  outputs = { self, nixpkgs, home-manager, agenix, impermanence, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, agenix, impermanence, ... }@inputs:
 
-  let system = "x86_64-linux";
+  let
+    system = "x86_64-linux";
+    pkgsUnstable = import nixpkgs-unstable {
+      inherit system;
+      config.allowUnfree = true;
+    };
   
   in {
     nixosConfigurations = {
       pcdohu = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs = { inherit inputs; };
+        specialArgs = { inherit inputs pkgsUnstable; };
         modules = [
           ./hosts/pcdohu/configuration.nix
 
@@ -40,7 +45,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.extraSpecialArgs = { inherit inputs pkgsUnstable; };
             home-manager.users.huanderson = import ./home/huanderson.nix;
           }
         ];
