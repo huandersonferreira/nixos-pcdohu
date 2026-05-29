@@ -69,4 +69,22 @@
     anydesk
     bitwarden-desktop
   ];
+
+  systemd.user.services.krdpserver = {
+    Unit = {
+      Description = "KDE Plasma Wayland RDP server";
+      After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+
+    Service = {
+      ExecStart = "${pkgs.kdePackages.krdp}/bin/krdpserver --plasma";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+
+    Install = {
+      WantedBy = [ "graphical-session.target" ];
+    };
+  };
 }
