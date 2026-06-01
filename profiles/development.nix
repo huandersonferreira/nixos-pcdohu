@@ -26,6 +26,8 @@
     go
 
     ollama-vulkan
+
+    bambu-studio
   ];
 
   services.ollama = {
