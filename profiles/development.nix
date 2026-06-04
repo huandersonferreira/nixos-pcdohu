@@ -25,13 +25,12 @@
     python3
     go
 
-    ollama-vulkan
-
     bambu-studio
   ];
 
   services.ollama = {
     enable = true;
-    package = pkgs.ollama-vulkan;
+    acceleration = "rocm";
+    rocmOverrideGfx = "10.3.0"; # RX 6750 XT (gfx1032) não reconhecida automaticamente; forçar RDNA2 resolve
   };
 }
