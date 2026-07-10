@@ -11,6 +11,9 @@
     ];
   };
 
+  # Impressora virtual "Print to PDF" (salva em ~/Documents por padrão)
+  services.printing.cups-pdf.enable = true;
+
   # Descoberta de impressoras/scanners na rede via mDNS (Wi-Fi)
   services.avahi = {
     enable = true;
@@ -34,5 +37,6 @@
   environment.systemPackages = with pkgs; [
     system-config-printer
     simple-scan
+    kdePackages.print-manager
   ];
 }
