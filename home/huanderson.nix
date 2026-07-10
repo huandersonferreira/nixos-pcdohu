@@ -45,7 +45,12 @@
     };
   };
 
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    shellAliases = {
+      nrs = "sudo nixos-rebuild switch --flake /etc/nixos#pcdohu";
+    };
+  };
 
   programs.starship.enable = true;
 

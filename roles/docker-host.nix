@@ -15,5 +15,6 @@
     docker
     docker-compose
     docker-buildx
+    distrobox
   ];
 }

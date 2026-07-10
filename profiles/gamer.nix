@@ -29,5 +29,7 @@
     mangohud
     protontricks
     winetricks
+    wineWowPackages.stable
+    bottles
   ];
 }

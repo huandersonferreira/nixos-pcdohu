@@ -10,10 +10,12 @@
     ../../profiles/gamer.nix
 
     ../../modules/hardware/optimizations.nix
+    ../../modules/hardware/bluetooth.nix
 
     ../../roles/workstation.nix
     ../../roles/docker-host.nix
     ../../roles/virtualization.nix
+    ../../roles/sims4-containers.nix
   ];
 
   networking.hostName = "PCdoHU";
@@ -50,16 +52,20 @@
     variant = "intl";
   };
 
+  programs.zsh.enable = true;
+
   users.users = {
     huanderson = {
       isNormalUser = true;
       description = "Huanderson Ferreira";
+      shell = pkgs.zsh;
       extraGroups = [
         "wheel"
         "networkmanager"
         "docker"
         "libvirt"
         "wireshark"
+        "input"
       ];
     };
   };
