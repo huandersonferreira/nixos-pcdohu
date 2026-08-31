@@ -11,6 +11,8 @@
 
   environment.systemPackages = with pkgs; [
     discord
+    freecad-wayland
     google-chrome
+    vlc
   ];
 }
