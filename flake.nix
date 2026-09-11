@@ -19,6 +19,11 @@
     agenix.url = "github:ryantm/agenix";
 
     impermanence.url = "github:nix-community/impermanence";
+
+    openlogi = {
+      url = "github:AprilNEA/OpenLogi";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, agenix, impermanence, ... }@inputs:

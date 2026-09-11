@@ -12,6 +12,7 @@
     ../../modules/hardware/optimizations.nix
     ../../modules/hardware/bluetooth.nix
     ../../modules/hardware/printing.nix
+    ../../modules/hardware/openlogi.nix
 
     ../../roles/workstation.nix
     ../../roles/docker-host.nix
