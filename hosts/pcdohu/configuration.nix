@@ -13,6 +13,7 @@
     ../../modules/hardware/bluetooth.nix
     ../../modules/hardware/printing.nix
     ../../modules/hardware/openlogi.nix
+    ../../modules/hardware/asus-mainboard.nix
 
     ../../roles/workstation.nix
     ../../roles/docker-host.nix
@@ -46,9 +47,11 @@
   };
 
   # Configura o teclado no console (TTY)
-  console.keyMap = "br-abnt2";
+  console.keyMap = "us-acentos";
 
-  # Configura o teclado no ambiente gráfico (X11/Wayland/Plasma)
+  # Configura o teclado no ambiente gráfico (X11/Wayland/Plasma).
+  # MX Keys US ANSI com US Internacional (dead keys clássicos).
+  # Override de ' + c → ç fica em ~/.XCompose.
   services.xserver.xkb = {
     layout = "us";
     variant = "intl";
@@ -75,6 +78,8 @@
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     trusted-users = [ "root" "huanderson" ];
+    extra-substituters = [ "https://herdr.cachix.org" ];
+    extra-trusted-public-keys = [ "herdr.cachix.org-1:3nH7IStRsS0ASfdonA0DCRR2ZrSCeWitZ7Kwew0cR4I=" ];
   };
 
   nixpkgs.config.allowUnfree = true;
