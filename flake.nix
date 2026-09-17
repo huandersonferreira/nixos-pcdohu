@@ -24,6 +24,8 @@
       url = "github:AprilNEA/OpenLogi";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    herdr-nix.url = "github:herdrdev/herdr-nix";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, agenix, impermanence, ... }@inputs:
