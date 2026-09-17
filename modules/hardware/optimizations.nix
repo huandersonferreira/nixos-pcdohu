@@ -25,6 +25,20 @@
     cores = 0;
   };
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
+
+  nix.optimise = {
+    automatic = true;
+    dates = [ "weekly" ];
+  };
+
+  # Não bloqueia o boot esperando conectividade.
+  systemd.services.NetworkManager-wait-online.enable = false;
+
   hardware.graphics = {
     extraPackages = [ ];
   };
