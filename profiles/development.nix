@@ -1,4 +1,4 @@
-{ pkgs, pkgsUnstable, ... }:
+{ pkgs, pkgsUnstable, inputs, ... }:
 
 {
   environment.systemPackages = with pkgs; [
@@ -9,8 +9,10 @@
     github-copilot-cli
     gemini-cli
     claude-code
+    inputs.herdr-nix.packages.${pkgs.system}.default
     pkgsUnstable.dbeaver-bin
     pkgsUnstable.warp-terminal
+    pkgsUnstable.ghostty
     termius
     postman
 
@@ -27,6 +29,8 @@
 
     bambu-studio
   ];
+
+  programs.mtr.enable = true;
 
   services.ollama = {
     enable = true;
