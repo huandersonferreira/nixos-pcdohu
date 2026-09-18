@@ -26,7 +26,10 @@
   gst_all_1,
   gtest,
   gtk3,
+  gspell,
   hicolor-icon-theme,
+  libxkbcommon,
+  pcre2,
   libsecret,
   libnotify,
   libpng,
@@ -114,7 +117,10 @@ stdenv.mkDerivation (finalAttrs: {
     gst_all_1.gst-plugins-bad
     gst_all_1.gst-plugins-good
     gtk3
+    gspell
     hicolor-icon-theme
+    libxkbcommon
+    pcre2
     libsecret
     libnotify
     libpng
@@ -218,9 +224,16 @@ stdenv.mkDerivation (finalAttrs: {
     # buildado via CMake e expõe lib/cmake/wxWidgets-3.3/ mas sem wx-config
     # (que é o que a busca legacy do CMake procura no Linux).
     sed -i 's|find_package(wxWidgets 3.3 REQUIRED COMPONENTS|find_package(wxWidgets 3.3 CONFIG REQUIRED COMPONENTS|' src/CMakeLists.txt
-    # ElegooSlicer checa wxHAS_EGL mas wxGTK expõe wxUSE_GLCANVAS_EGL.
-    # Sem esse fix, força X11 e a tela do slicer fica branca no Wayland.
-    sed -i 's@!defined(wxHAS_EGL) || !wxHAS_EGL@!wxUSE_GLCANVAS_EGL@g' src/ElegooSlicer.cpp
+    # HomeView depende de wxEVT_SHOW do MainFrame para inicializar o
+    # WebView de navegação (via CallAfter). Em Wayland esse evento não
+    # dispara consistente, deixando a Home vazia. Forçamos:
+    # 1) chamar initializeNavigationWebView em qualquer Show
+    # 2) fazer o initUI já disparar a inicialização (CallAfter para depois
+    #    do event loop rodar uma vez, garantindo que wxWebView tá pronto).
+    sed -i 's|if (show \&\& mResetNavigationOnShow)|if (show \&\& !mNavigationWebViewInitialized)|' \
+      src/slic3r/GUI/Elegoo/HomeView.cpp
+    sed -i 's|mResetNavigationOnShow = wxGetApp().is_recreating_gui();|mResetNavigationOnShow = wxGetApp().is_recreating_gui();\n    CallAfter([this]{ initializeNavigationWebView(); });|' \
+      src/slic3r/GUI/Elegoo/HomeView.cpp
   '';
 
   cmakeFlags = [
