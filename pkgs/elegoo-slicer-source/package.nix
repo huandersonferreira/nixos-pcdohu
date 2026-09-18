@@ -28,6 +28,7 @@
   gtk3,
   hicolor-icon-theme,
   libsecret,
+  libnotify,
   libpng,
   mpfr,
   nlopt,
@@ -38,24 +39,17 @@
   systemd,
   onetbb,
   webkitgtk_4_1,
-  wxGTK33,
   xorg,
   libnoise,
   sentry-native,
   callPackage,
-  libGL,
   withSystemd ? stdenv.hostPlatform.isLinux,
 }:
 let
-  # wxGTK33 do nixpkgs é build com asserts ativos + sem EGL; ElegooSlicer
-  # dispara asserts em cada dialog e renderiza tela branca no Wayland sem EGL.
-  wxGTK' = wxGTK33.overrideAttrs (old: {
-    configureFlags = (old.configureFlags or [ ]) ++ [
-      "--enable-debug=no"
-      "--enable-glcanvasegl"
-    ];
-    buildInputs = (old.buildInputs or [ ]) ++ [ libGL ];
-  });
+  # Fork do wxWidgets 3.3.2 mantido pelo time do OrcaSlicer, com patches
+  # e opções (wxUSE_PRIVATE_FONTS, WebView próprio, etc) que fazem a Home
+  # renderizar. wxGTK33 do nixpkgs é upstream 3.3.1 sem esses patches.
+  wxGTK' = callPackage ../wxwidgets-orca/package.nix { };
   ixwebsocket' = callPackage ../ixwebsocket/package.nix { };
   elegoolink = callPackage ../elegoolink/package.nix { ixwebsocket = ixwebsocket'; };
 
@@ -122,6 +116,7 @@ stdenv.mkDerivation (finalAttrs: {
     gtk3
     hicolor-icon-theme
     libsecret
+    libnotify
     libpng
     mpfr
     nlopt
@@ -153,6 +148,11 @@ stdenv.mkDerivation (finalAttrs: {
 
   NIX_CFLAGS_COMPILE = toString (
     [
+      # wxWidgets do fork Orca é buildado com wxBUILD_DEBUG_LEVEL=0
+      # (sem asserts), então wxTheAssertHandler não existe. Precisamos que
+      # o Elegoo também compile com wxDEBUG_LEVEL=0 para os macros wxASSERT
+      # expandirem pra no-op ao invés de referenciar o handler ausente.
+      "-DwxDEBUG_LEVEL=0"
       "-Wno-ignored-attributes"
       "-I${opencv.out}/include/opencv4"
       "-Wno-error=incompatible-pointer-types"
@@ -214,6 +214,10 @@ stdenv.mkDerivation (finalAttrs: {
     # Boost 1.87: resolver retorna results (não iterator) — endpoints->endpoint()
     # precisa virar endpoints.begin()->endpoint().
     sed -i 's|endpoints->endpoint()|endpoints.begin()->endpoint()|' src/slic3r/Utils/TCPConsole.cpp
+    # Força modo CONFIG do find_package(wxWidgets): nosso fork Orca é
+    # buildado via CMake e expõe lib/cmake/wxWidgets-3.3/ mas sem wx-config
+    # (que é o que a busca legacy do CMake procura no Linux).
+    sed -i 's|find_package(wxWidgets 3.3 REQUIRED COMPONENTS|find_package(wxWidgets 3.3 CONFIG REQUIRED COMPONENTS|' src/CMakeLists.txt
     # ElegooSlicer checa wxHAS_EGL mas wxGTK expõe wxUSE_GLCANVAS_EGL.
     # Sem esse fix, força X11 e a tela do slicer fica branca no Wayland.
     sed -i 's@!defined(wxHAS_EGL) || !wxHAS_EGL@!wxUSE_GLCANVAS_EGL@g' src/ElegooSlicer.cpp
