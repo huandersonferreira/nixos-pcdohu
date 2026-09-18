@@ -28,6 +28,9 @@
     go
 
     bambu-studio
+    (pkgs.callPackage ../pkgs/elegoo-slicer-source/package.nix {
+      sentry-native = pkgsUnstable.sentry-native;
+    })
   ];
 
   programs.mtr.enable = true;
