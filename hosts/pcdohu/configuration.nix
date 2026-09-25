@@ -14,6 +14,7 @@
     ../../modules/hardware/printing.nix
     ../../modules/hardware/openlogi.nix
     ../../modules/hardware/asus-mainboard.nix
+    ../../modules/hardware/nobreak.nix
 
     ../../roles/workstation.nix
     ../../roles/docker-host.nix
