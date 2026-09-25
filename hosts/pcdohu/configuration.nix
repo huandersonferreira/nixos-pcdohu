@@ -71,6 +71,7 @@
         "libvirt"
         "wireshark"
         "input"
+        "dialout"
       ];
     };
   };

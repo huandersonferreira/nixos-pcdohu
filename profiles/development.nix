@@ -27,9 +27,29 @@
     python3
     go
 
+    platformio-core
+
     bambu-studio
     (pkgs.callPackage ../pkgs/elegoo-slicer/package.nix { })
   ];
+
+  services.udev.packages = [ pkgs.platformio-core.udev ];
+
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+      zlib
+      openssl
+      libffi
+      ncurses
+      bzip2
+      xz
+      readline
+      sqlite
+      libuuid
+    ];
+  };
 
   programs.mtr.enable = true;
 
