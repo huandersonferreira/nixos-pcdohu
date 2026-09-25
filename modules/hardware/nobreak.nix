@@ -46,6 +46,11 @@ in
 {
   environment.systemPackages = [ supervise ];
 
+  # UI web em http://<host>:4470 — libera acesso da LAN.
+  # UDP 4470 é usado pelo app mobile pra descoberta local.
+  networking.firewall.allowedTCPPorts = [ 4470 ];
+  networking.firewall.allowedUDPPorts = [ 4470 ];
+
   systemd.tmpfiles.rules = [
     "d /var/lock 0755 root root - -"
     "d ${workDir} 0755 root root - -"
@@ -113,5 +118,12 @@ in
     after = [ "notifysvc.service" ];
   };
 
-  # cloudsvc (MQTT / cloud broker) deixado desabilitado — opt-in se quiser.
+  # cloudsvc conecta na nuvem Ragtech via MQTT (broker configurado em
+  # /var/lib/supervise/client.cfg [cloudsvc.mqtt]). É por onde o app
+  # mobile relaia comandos e recebe telemetria fora da LAN.
+  systemd.services.cloudsvc = mkSvc {
+    description = "Ragtech Supervise Cloud Agent";
+    exec = "cloudsvc";
+    after = [ "supsvc.service" ];
+  };
 }
