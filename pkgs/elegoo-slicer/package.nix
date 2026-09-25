@@ -52,6 +52,15 @@ let
       cacert
       glib-networking
       gsettings-desktop-schemas
+      # Loaders de imagem que o WebKit/GdkPixbuf usa (o AppImage não empacota).
+      # Sem librsvg os ícones SVG do Home/Discovery/Device somem.
+      gdk-pixbuf
+      librsvg
+      shared-mime-info
+      # WebKit usa GStreamer para <video>/<audio> e alguns codecs de imagem.
+      gst_all_1.gstreamer
+      gst_all_1.gst-plugins-base
+      gst_all_1.gst-plugins-good
       hack-font
       dejavu_fonts
       liberation_ttf
@@ -90,6 +99,7 @@ symlinkJoin {
       --set GSETTINGS_SCHEMA_DIR /usr/share/glib-2.0/schemas \
       --set XDG_DATA_DIRS /usr/share \
       --set WEBKIT_DISABLE_COMPOSITING_MODE 1 \
+      --set WEBKIT_DISABLE_DMABUF_RENDERER 1 \
       --set WEBKIT_DISABLE_SANDBOX_THIS_IS_DANGEROUS 1
   '';
 
