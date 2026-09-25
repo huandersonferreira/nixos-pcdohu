@@ -50,6 +50,12 @@
     shellAliases = {
       nrs = "sudo nixos-rebuild switch --flake /etc/nixos#pcdohu";
     };
+    sessionVariables = {
+      PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
+      PRISMA_QUERY_ENGINE_BINARY  = "${pkgs.prisma-engines}/bin/query-engine";
+      PRISMA_QUERY_ENGINE_LIBRARY = "${pkgs.prisma-engines}/lib/libquery_engine.node";
+      PRISMA_FMT_BINARY           = "${pkgs.prisma-engines}/bin/prisma-fmt";
+    };
   };
 
   programs.starship.enable = true;
@@ -72,6 +78,8 @@
     winbox4
     anydesk
     bitwarden-desktop
+    prisma-engines
+    corepack_22
   ];
 
   systemd.user.services.krdpserver = {
