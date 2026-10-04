@@ -80,7 +80,7 @@
     bitwarden-desktop
     prisma-engines
     corepack_22
-    notion-app
+    notion-app-enhanced
   ];
 
   systemd.user.services.krdpserver = {
