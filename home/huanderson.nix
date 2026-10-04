@@ -49,6 +49,8 @@
     enable = true;
     shellAliases = {
       nrs = "sudo nixos-rebuild switch --flake /etc/nixos#pcdohu";
+      nfu = "sudo nix flake update --flake /etc/nixos";
+      nru = "sudo nix flake update --flake /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos#pcdohu";
     };
     sessionVariables = {
       PRISMA_SCHEMA_ENGINE_BINARY = "${pkgs.prisma-engines}/bin/schema-engine";
