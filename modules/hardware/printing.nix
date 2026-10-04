@@ -1,6 +1,11 @@
 { pkgs, ... }:
 
 {
+  # Módulo do kernel pra impressoras USB "printer class" (POS/label térmicas).
+  # Necessário pra impressora de etiqueta TSPL (0416:5011 "POS Label Printer")
+  # aparecer como /dev/usb/lp0. Sem isso, nenhum nó é criado.
+  boot.kernelModules = [ "usblp" ];
+
   # Servidor de impressão CUPS com drivers HP (inclui plugin proprietário)
   services.printing = {
     enable = true;
@@ -38,5 +43,10 @@
     system-config-printer
     simple-scan
     kdePackages.print-manager
+    # Design gráfico de etiquetas (WYSIWYG); exporta PNG/PDF pra converter em TSPL.
+    # glabels-qt é o fork ativo do glabels clássico (upstream sem manutenção).
+    glabels-qt
+    # CLI 'tsplabel' pra imprimir etiquetas na impressora TSPL (0416:5011).
+    (pkgs.callPackage ../../pkgs/tsplabel/package.nix { })
   ];
 }
