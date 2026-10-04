@@ -1,4 +1,4 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, pkgsUnstable, inputs, ... }:
 
 {
   imports = [
@@ -77,7 +77,7 @@
     yubioath-flutter
     yubikey-manager
     pam_u2f
-    winbox4
+    pkgsUnstable.winbox4
     anydesk
     bitwarden-desktop
     prisma-engines
