@@ -22,6 +22,7 @@
 
     curl
     wget
+    unzip
 
     nodejs
     python3
