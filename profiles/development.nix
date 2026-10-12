@@ -30,7 +30,6 @@
 
     platformio-core
 
-    bambu-studio
     (pkgs.callPackage ../pkgs/elegoo-slicer/package.nix { })
   ];
 
