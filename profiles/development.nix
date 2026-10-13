@@ -23,6 +23,7 @@
     curl
     wget
     unzip
+    unrar
 
     nodejs
     python3
