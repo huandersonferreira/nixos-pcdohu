@@ -13,6 +13,7 @@
     discord
     freecad-wayland
     google-chrome
+    telegram-desktop
     vlc
   ];
 
