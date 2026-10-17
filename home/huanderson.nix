@@ -25,7 +25,8 @@
       AC = {
         powerProfile = "performance";
         # Nada automático: tela só apaga 30s depois do lock manual.
-        turnOffDisplay.idleTimeout = "never";
+        # "never" literal não aceita idleTimeoutWhenLocked junto; 24h ~ nunca.
+        turnOffDisplay.idleTimeout = 86400;
         turnOffDisplay.idleTimeoutWhenLocked = 30;
         autoSuspend.action = "nothing";
       };
