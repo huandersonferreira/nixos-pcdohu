@@ -3,6 +3,11 @@
 {
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Desliga PCIe ASPM na GPU: evita que o DP perca link training silenciosamente
+  # quando o monitor sai de DPMS/power-save (sintoma: monitor fica preto até
+  # reconectar o cabo). Custo ~5W a mais em idle.
+  boot.kernelParams = [ "amdgpu.aspm=0" ];
+
   services.fstrim.enable = true;
 
   powerManagement.cpuFreqGovernor = "performance";
