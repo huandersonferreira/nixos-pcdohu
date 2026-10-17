@@ -24,14 +24,15 @@
     powerdevil = {
       AC = {
         powerProfile = "performance";
-        turnOffDisplay.idleTimeout = 3600;
+        # Nada automático: tela só apaga 30s depois do lock manual.
+        turnOffDisplay.idleTimeout = "never";
+        turnOffDisplay.idleTimeoutWhenLocked = 30;
         autoSuspend.action = "nothing";
       };
     };
 
     kscreenlocker = {
-      autoLock = true;
-      timeout = 10;
+      autoLock = false;
     };
   };
 
