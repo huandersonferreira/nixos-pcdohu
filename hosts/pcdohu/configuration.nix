@@ -16,6 +16,8 @@
     ../../modules/hardware/asus-mainboard.nix
     ../../modules/hardware/nobreak.nix
 
+    ../../modules/services/ollama.nix
+
     ../../roles/workstation.nix
     ../../roles/docker-host.nix
     ../../roles/virtualization.nix
