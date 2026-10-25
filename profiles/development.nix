@@ -32,6 +32,7 @@
     platformio-core
 
     (pkgs.callPackage ../pkgs/elegoo-slicer/package.nix { })
+    pkgsUnstable.orca-slicer
   ];
 
   services.udev.packages = [ pkgs.platformio-core.udev ];
