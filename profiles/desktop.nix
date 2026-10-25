@@ -5,10 +5,34 @@
     ../modules/desktop/kde.nix
   ];
 
+  # Ativa Ozone/Wayland nativo pros apps Chromium (o wrapper do google-chrome
+  # do nixpkgs lê NIXOS_OZONE_WL e injeta --ozone-platform-hint=auto).
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+  };
+
   environment.systemPackages = with pkgs; [
     discord
     freecad-wayland
-    google-chrome
+    # Chrome 149 descarta VAAPI em GPUs AMD por "driver check" interno;
+    # VaapiIgnoreDriverChecks + habilitação explícita do pipeline VAAPI
+    # manda o decode do vídeo pro VCN da Navi 22 em vez da CPU.
+    # Combina com rasterização Vulkan (ligada em chrome://flags), que
+    # mitiga o GPU reset do backend GL default.
+    (google-chrome.override {
+      commandLineArgs = toString [
+        # VAAPI acelera decode de vídeo pelo VCN da Navi 22. Em Wayland
+        # nativo, Vulkan Ganesh conflita com o VaapiVideoDecoder (toda
+        # config é rejeitada como kUnsupportedConfig), por isso Vulkan
+        # tem que ficar desligado em chrome://flags. Trade-off: sem o
+        # backend Vulkan de rasterização o Chrome volta pro path GL
+        # default, que historicamente causou GPU reset na RX 6700 XT —
+        # se voltar a travar, religar Vulkan e aceitar decode em CPU.
+        "--enable-features=VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks,VaapiVideoDecodeLinuxGL"
+        "--ignore-gpu-blocklist"
+      ];
+    })
+    libva-utils
     telegram-desktop
     vlc
   ];
