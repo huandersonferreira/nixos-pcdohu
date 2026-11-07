@@ -1,7 +1,7 @@
 { pkgs, pkgsUnstable, lib, ... }:
 
-# Backend de inferência local para o OpenJarvis (e qualquer outra coisa que
-# fale a API HTTP do Ollama em localhost:11434).
+# Backend de inferência local para o OpenJarvis, Project NOMAD e qualquer
+# coisa que fale a API HTTP do Ollama.
 #
 # GPU: Radeon RX 6700 XT (gfx1031) — não está na lista oficial de GPUs
 # suportadas pelo ROCm, mas funciona com o override HSA_OVERRIDE_GFX_VERSION
@@ -11,29 +11,46 @@
 # algorithm que offloada "0/N layers to GPU" em RX 6xxx mesmo com VRAM
 # sobrando. O 0.40+ corrige.
 #
-# Modelos ficam em /var/lib/ollama — adicionado em environment.persistence
-# para sobreviver aos reboots (impermanence apaga tudo fora de /persist).
+# host = "0.0.0.0": necessário pra containers Docker (ex.: Project NOMAD)
+# alcançarem a API via host.docker.internal. Expõe 11434 na LAN;
+# restringir via firewall se o ambiente não for confiável.
+#
+# Storage em /mnt/storage/ollama (btrfs no NVMe secundário) via user fixo
+# ollama — DynamicUser do systemd + home em disco externo é dor de cabeça
+# (ownership efêmero, bind mounts, impermanence no /var/lib/private). Com
+# user fixo, home e modelos ficam direto no path do subvolume.
 
 {
+  users.groups.ollama = {};
+  users.users.ollama = {
+    isSystemUser = true;
+    group = "ollama";
+    home = "/mnt/storage/ollama";
+  };
+
   services.ollama = {
     enable = true;
     package = pkgsUnstable.ollama-rocm;
     acceleration = "rocm";
     rocmOverrideGfx = "10.3.0";
+    host = "0.0.0.0";
+    user = "ollama";
+    group = "ollama";
+    home = "/mnt/storage/ollama";
+    models = "/mnt/storage/ollama/models";
   };
 
-  # Ollama roda com DynamicUser via systemd, então o StateDirectory real é
-  # /var/lib/private/ollama; /var/lib/ollama é só um symlink. Impermanence
-  # precisa do path canônico, senão o bind mount falha com "not canonical
-  # (contains a symlink)".
-  environment.persistence."/persist".directories = [
-    "/var/lib/private/ollama"
-  ];
+  # Libera 11434 no firewall pra que containers Docker em bridges custom
+  # (ex.: project-nomad em 172.24.0.0/16) alcancem a API via
+  # host.docker.internal.
+  networking.firewall.allowedTCPPorts = [ 11434 ];
 
-  # Systemd DynamicUser cria /var/lib/private com 0700 e recusa iniciar se
-  # já existir com modo mais permissivo. Como impermanence e nossa criação
-  # inicial deixaram 0755, forçar o modo correto via tmpfiles.
+  # Garante que o home existe com ownership certo antes do serviço subir.
+  # A regra do /var/lib/private vem do módulo anterior e segue valendo para
+  # qualquer outro serviço que use DynamicUser em cima de impermanence.
   systemd.tmpfiles.rules = [
-    "d /var/lib/private 0700 root root - -"
+    "d /var/lib/private            0700 root   root   - -"
+    "d /mnt/storage/ollama         0755 ollama ollama - -"
+    "d /mnt/storage/ollama/models  0755 ollama ollama - -"
   ];
 }

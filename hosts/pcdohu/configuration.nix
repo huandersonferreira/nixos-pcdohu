@@ -16,7 +16,10 @@
     ../../modules/hardware/asus-mainboard.nix
     ../../modules/hardware/nobreak.nix
 
+    ../../modules/storage/data-disk.nix
+
     ../../modules/services/ollama.nix
+    ../../modules/services/project-nomad.nix
 
     ../../roles/workstation.nix
     ../../roles/docker-host.nix
