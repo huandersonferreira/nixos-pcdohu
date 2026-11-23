@@ -14,25 +14,22 @@
   environment.systemPackages = with pkgs; [
     discord
     freecad-wayland
-    # Chrome 149 descarta VAAPI em GPUs AMD por "driver check" interno;
-    # VaapiIgnoreDriverChecks + habilitação explícita do pipeline VAAPI
-    # manda o decode do vídeo pro VCN da Navi 22 em vez da CPU.
-    # Combina com rasterização Vulkan (ligada em chrome://flags), que
-    # mitiga o GPU reset do backend GL default.
+    # Rasterização Vulkan (Skia GaneshVulkan) é o que evita o GPU reset
+    # do backend GL default na RX 6700 XT — sem ela o Chrome trava em
+    # loop de pageflip no amdgpu. Mas Wayland nativo + GaneshVulkan é
+    # incompatível no Chrome 149 (o próprio browser avisa: "wayland is
+    # not compatible with Vulkan"): o compound backing das texturas de
+    # vídeo não expõe representação Skia, e o <video> renderiza em
+    # branco. Solução oficial recomendada pelo Chrome: rodar sob
+    # XWayland via --ozone-platform=x11. KDE/KWin continuam Wayland
+    # para o resto do sistema; apenas o Chrome usa a camada X11.
     (google-chrome.override {
       commandLineArgs = toString [
-        # VAAPI acelera decode de vídeo pelo VCN da Navi 22. Em Wayland
-        # nativo, Vulkan Ganesh conflita com o VaapiVideoDecoder (toda
-        # config é rejeitada como kUnsupportedConfig), por isso Vulkan
-        # tem que ficar desligado em chrome://flags. Trade-off: sem o
-        # backend Vulkan de rasterização o Chrome volta pro path GL
-        # default, que historicamente causou GPU reset na RX 6700 XT —
-        # se voltar a travar, religar Vulkan e aceitar decode em CPU.
-        "--enable-features=VaapiVideoDecoder,VaapiVideoEncoder,VaapiIgnoreDriverChecks,VaapiVideoDecodeLinuxGL"
+        "--enable-features=Vulkan"
+        "--ozone-platform=x11"
         "--ignore-gpu-blocklist"
       ];
     })
-    libva-utils
     telegram-desktop
     vlc
   ];
