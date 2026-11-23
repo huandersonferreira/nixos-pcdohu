@@ -51,6 +51,10 @@
     enable = true;
     shellAliases = {
       nrs = "sudo nixos-rebuild switch --flake /etc/nixos#pcdohu";
+      nrt = "sudo nixos-rebuild test --flake /etc/nixos#pcdohu";
+      nrb = "sudo nixos-rebuild boot --flake /etc/nixos#pcdohu";
+      nrr = "sudo nixos-rebuild switch --rollback --flake /etc/nixos#pcdohu";
+      nrd = "nixos-rebuild build --flake /etc/nixos#pcdohu && nix store diff-closures /run/current-system ./result";
       nfu = "sudo nix flake update --flake /etc/nixos";
       nru = "sudo nix flake update --flake /etc/nixos && sudo nixos-rebuild switch --flake /etc/nixos#pcdohu";
     };
