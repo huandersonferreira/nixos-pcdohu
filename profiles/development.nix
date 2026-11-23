@@ -22,6 +22,8 @@
 
     curl
     wget
+    dnsutils
+    nmap
     unzip
     unrar
 
